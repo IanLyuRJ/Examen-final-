@@ -4,6 +4,7 @@
 
 #define TAMANIO 50000
 #define NUM_EJECUCIONES 100
+#define REPETICIONES_BUSQUEDA 1000 //Igual que el ejercicio uno, tuve que repetir las operaciones y sacar el promedio para asi tener algo en el tiempo que sea mayor a 0.0000
 
 void generarArregloOrdenado(int arr[], int n) {
     for (int i = 0; i < n; i++) {
@@ -55,28 +56,29 @@ int main() {
     srand(time(NULL));
     generarArregloOrdenado(arr, TAMANIO);
 
-   
     for (int i = 0; i < NUM_EJECUCIONES; i++) {
         int clave = rand() % TAMANIO;
         inicio = clock();
-        busquedaSecuencial(arr, TAMANIO, clave);
+        for (int j = 0; j < REPETICIONES_BUSQUEDA; j++) {
+            busquedaSecuencial(arr, TAMANIO, clave);
+        }
         fin = clock();
-        tiemposSecuencial[i] = ((double) (fin - inicio)) / CLOCKS_PER_SEC * 1000;
+        tiemposSecuencial[i] = ((double) (fin - inicio)) / CLOCKS_PER_SEC / REPETICIONES_BUSQUEDA * 1000;
     }
     printf("Busqueda Secuencial:\n");
     imprimirEstadisticas(tiemposSecuencial, NUM_EJECUCIONES);
 
-    
     for (int i = 0; i < NUM_EJECUCIONES; i++) {
         int clave = rand() % TAMANIO;
         inicio = clock();
-        busquedaBinaria(arr, 0, TAMANIO - 1, clave);
+        for (int j = 0; j < REPETICIONES_BUSQUEDA; j++) {
+            busquedaBinaria(arr, 0, TAMANIO - 1, clave);
+        }
         fin = clock();
-        tiemposBinario[i] = ((double) (fin - inicio)) / CLOCKS_PER_SEC * 1000;
+        tiemposBinario[i] = ((double) (fin - inicio)) / CLOCKS_PER_SEC / REPETICIONES_BUSQUEDA * 1000;
     }
     printf("\nBusqueda Binaria:\n");
     imprimirEstadisticas(tiemposBinario, NUM_EJECUCIONES);
 
     return 0;
 }
-
